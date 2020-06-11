@@ -1,2 +1,3 @@
+include ':BaseMVVMLibrary'
 include ':app'
 rootProject.name = "LightMVVMDemo"

@@ -1,0 +1,11 @@
+ext {
+    android = [
+            compileSdkVersion: 29,
+            applicationId    : "cn.yun.onetouch.lightmvvmdemo",
+            minSdkVersion    : 29,
+            targetSdkVersion : 29,
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+}
