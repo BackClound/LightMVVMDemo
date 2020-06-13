@@ -1,4 +1,4 @@
-package cn.yun.onetouch.basemvvmlibrary
+package cn.yun.onetouch.basemvvmlibrary.base
 
 class BaseModel : IModel {
 

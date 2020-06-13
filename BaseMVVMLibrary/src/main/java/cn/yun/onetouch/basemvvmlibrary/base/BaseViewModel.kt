@@ -1,14 +1,14 @@
-package cn.yun.onetouch.basemvvmlibrary
+package cn.yun.onetouch.basemvvmlibrary.base
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 
-abstract class BaseViewModel<Model: BaseModel>(application: Application) : AndroidViewModel(application),IBaseViewModel,Consumer<Disposable> {
+abstract class BaseViewModel<Model: BaseModel>(application: Application) : AndroidViewModel(application),
+    IBaseViewModel,Consumer<Disposable> {
     abstract var model :Model
 
 

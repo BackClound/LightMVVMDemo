@@ -1,4 +1,4 @@
-package cn.yun.onetouch.basemvvmlibrary
+package cn.yun.onetouch.basemvvmlibrary.base
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
