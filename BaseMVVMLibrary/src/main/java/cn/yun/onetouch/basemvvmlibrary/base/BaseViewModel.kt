@@ -14,10 +14,9 @@ import io.reactivex.functions.Consumer
 import java.lang.ref.WeakReference
 
 class BaseViewModel<Model : BaseModel>(application: Application, model: Model?) :
-    AndroidViewModel(application),
-    IBaseViewModel, Consumer<Disposable> {
+    AndroidViewModel(application), IBaseViewModel, Consumer<Disposable> {
     var model: Model? = model
-    private var uc = UIChangeLiveData()
+    val uc = UIChangeLiveData()
 
     //弱引用持有者
     var lifecycle: WeakReference<LifecycleProvider<*>>? = null
@@ -157,10 +156,10 @@ class BaseViewModel<Model : BaseModel>(application: Application, model: Model?) 
         }
     }
 
-    enum class ParameterField(name: String) {
-        CLASS("Class"),
-        CANONICAL_NAME("CANONICAL_NAME"),
-        BUNDLE("BUNDLE")
-    }
+}
 
+enum class ParameterField(name: String) {
+    CLASS("Class"),
+    CANONICAL_NAME("CANONICAL_NAME"),
+    BUNDLE("BUNDLE")
 }
