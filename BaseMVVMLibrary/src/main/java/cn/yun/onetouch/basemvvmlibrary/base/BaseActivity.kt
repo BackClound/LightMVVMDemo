@@ -1,6 +1,5 @@
 package cn.yun.onetouch.basemvvmlibrary.base
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -8,9 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewbinding.ViewBinding
 import cn.yun.onetouch.basemvvmlibrary.base.ParameterField.*
 import cn.yun.onetouch.basemvvmlibrary.utils.materialDialogUtils
 import com.afollestad.materialdialogs.MaterialDialog
@@ -22,6 +19,7 @@ import java.lang.reflect.ParameterizedType
  * 这里根据项目业务可以换成你自己熟悉的BaseActivity, 但是需要继承RxAppCompatActivity,方便LifecycleProvider管理生命周期
  */
 
+@Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 abstract class BaseActivity<V : ViewDataBinding, VM : BaseViewModel<*>>() : RxAppCompatActivity(),
     IBaseView {
 
@@ -60,16 +58,16 @@ abstract class BaseActivity<V : ViewDataBinding, VM : BaseViewModel<*>>() : RxAp
             dismissDialog()
         })
         //跳转新界面
-        viewModel.uc.startActivityEvent.observe(this, Observer {
-            var clz = it.get(CLASS.name) as Class<*>
-            var bundle = it[BUNDLE] as Bundle
+        viewModel.uc.startActivityEvent.observe(this, Observer {params:Map<String, Any?> ->
+            val clz = params[CLASS.name] as Class<*>
+            val bundle:Bundle = params[BUNDLE.name] as Bundle
             startActivity(clz = clz, bundle = bundle)
         })
 
         //跳转ContainerActivity
         viewModel.uc.startContainerActivityEvent.observe(this, Observer {
-            var clz = it[ParameterField.CANONICAL_NAME] as String
-            var bundle = it[ParameterField.BUNDLE] as Bundle
+            val clz = it[CANONICAL_NAME.name] as String
+            val bundle: Bundle = it[BUNDLE.name] as Bundle
             startContainerActivity(clz, bundle)
         })
 
@@ -87,14 +85,15 @@ abstract class BaseActivity<V : ViewDataBinding, VM : BaseViewModel<*>>() : RxAp
         //DataBindingUtil类需要在project的build中配置dataBinding {enabled true}
         binding = DataBindingUtil.setContentView(this, initContentView(savedInstanceState))
         if (viewModel == null) {
-            var modeClass: Class<*>
+            var modeClass: Class<VM>
             var type = javaClass.genericSuperclass
-            modeClass = if (type is ParameterizedType) {
-                type.actualTypeArguments[1] as Class<VM>
+            modeClass = (if (type is ParameterizedType) {
+                type.actualTypeArguments[1]
             } else {
                 //如果没有指定泛型参数，默认使用BaseViewModel
                 BaseViewModel::class.java
-            }
+            }) as Class<VM>
+            @Suppress("UNCHECKED_CAST")
             viewModel = createViewModel(this, modeClass) as VM
         }
 
